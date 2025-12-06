@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Портфоліо — Рома</title>
+  <meta name="description" content="Портфоліо розробника — проєкти, навички та контакт." />
+
+  <style>
+    :root{
+      --bg:#0f1724; /* dark navy */
+      --card:#0b1220;
+      --muted:#9aa4b2;
+      --accent:#6ee7b7;
+      --glass: rgba(255,255,255,0.04);
+      --glass-2: rgba(255,255,255,0.02);
+      --max-width:1100px;
+      color-scheme: dark;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg, var(--bg) 0%, #071021 100%);
+      color:#e6eef6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+    }
+
+    .container{max-width:var(--max-width);margin:0 auto;padding:32px}
+
+    header{
+      position:sticky;top:0;backdrop-filter: blur(6px);background:linear-gradient(180deg, rgba(8,12,20,0.55), rgba(8,12,20,0.25));border-bottom:1px solid rgba(255,255,255,0.03);
+      z-index:40;
+    }
+
+    nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{
+      width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#8b5cf6,#06b6d4);display:flex;align-items:center;justify-content:center;font-weight:700;color:#042028;
+      box-shadow: 0 6px 18px rgba(6,182,212,0.08), inset 0 -6px 18px rgba(0,0,0,0.12);
+    }
+    .brand h1{font-size:16px;margin:0}
+    .brand p{margin:0;font-size:12px;color:var(--muted)}
+
+    .nav-links{display:flex;gap:16px;align-items:center}
+    .nav-links a{color:var(--muted);text-decoration:none;font-weight:600;font-size:14px;padding:8px;border-radius:8px}
+    .nav-links a:hover{color:var(--accent);background:var(--glass)}
+
+    .hero{display:grid;grid-template-columns:1fr 380px;gap:28px;align-items:center;padding:56px 0}
+    @media (max-width:880px){.hero{grid-template-columns:1fr;}.nav-links{display:none}}
+
+    .intro h2{margin:0;font-size:32px}
+    .intro p{color:var(--muted);margin-top:12px}
+
+    .cta{margin-top:18px;display:flex;gap:12px;flex-wrap:wrap}
+    .btn{background:linear-gradient(90deg,#10b981,#34d399);color:#042028;padding:10px 16px;border-radius:10px;font-weight:700;border:0;cursor:pointer}
+    .btn.ghost{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.04)}
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:14px;padding:18px;border:1px solid rgba(255,255,255,0.03);box-shadow: 0 6px 30px rgba(2,6,23,0.6);
+    }
+
+    .profile{
+      display:flex;flex-direction:column;gap:14px;align-items:center;text-align:center
+    }
+    .avatar{width:160px;height:160px;border-radius:16px;background:linear-gradient(180deg,#0ea5a7,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:48px;font-weight:800;color:#02141a}
+    .meta{color:var(--muted);font-size:14px}
+
+    /* Projects */
+    .projects{margin-top:32px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    @media (max-width:1000px){.projects{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:680px){.projects{grid-template-columns:1fr}}
+
+    .project-card{padding:16px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03)}
+    .project-card h3{margin:0 0 8px 0}
+    .project-card p{margin:0;color:var(--muted);font-size:13px}
+    .tags{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+    .tag{background:var(--glass);padding:6px 8px;border-radius:999px;font-size:12px;color:var(--muted)}
+
+    /* Skills */
+    .skills{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    @media (max-width:680px){.skills{grid-template-columns:1fr}}
+    .skill{display:flex;flex-direction:column;gap:6px}
+    .bar{height:10px;background:var(--glass-2);border-radius:999px;overflow:hidden}
+    .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#60a5fa);width:0;transition:width 1s ease}
+
+    footer{margin-top:48px;padding:28px 0;text-align:center;color:var(--muted);font-size:13px}
+
+    /* modal */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,0.6);z-index:80}
+    .modal.show{display:flex}
+    .modal-inner{width:min(880px,93%);max-height:88vh;overflow:auto;padding:20px;border-radius:12px;background:linear-gradient(180deg,#071126,#081428);border:1px solid rgba(255,255,255,0.04)}
+
+    /* small utilities */
+    .flex{display:flex;align-items:center;gap:12px}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .muted{color:var(--muted)}
+
+    /* tiny animation */
+    .fade-up{opacity:0;transform:translateY(12px);animation:fadeUp .6s forwards}
+    @keyframes fadeUp{to{opacity:1;transform:none}}
+
+    /* contact form */
+    form input, form textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+    form textarea{min-height:120px}
+
+    /* theme toggle */
+    .theme-toggle{padding:8px;border-radius:8px;background:var(--glass);cursor:pointer}
+
+    /* small screen nav button */
+    .menu-btn{display:none}
+    @media (max-width:880px){.menu-btn{display:inline-flex}}
+    .mobile-nav{display:none;position:absolute;left:0;right:0;top:64px;padding:16px}
+    .mobile-nav.show{display:block}
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <div class="brand">
+          <div class="logo">R</div>
+          <div>
+            <h1>Рома — фронтенд</h1>
+            <p>HTML • CSS • JavaScript</p>
+          </div>
+        </div>
+
+        <div class="nav-links">
+          <a href="#about">Про мене</a>
+          <a href="#projects">Проєкти</a>
+          <a href="#skills">Навички</a>
+          <a href="#contact">Контакти</a>
+          <button id="themeBtn" class="theme-toggle" title="Перемкнути тему">🌓</button>
+        </div>
+
+        <button class="menu-btn" id="menuBtn">☰</button>
+      </nav>
+
+      <div class="mobile-nav card" id="mobileNav">
+        <a href="#about">Про мене</a><br>
+        <a href="#projects">Проєкти</a><br>
+        <a href="#skills">Навички</a><br>
+        <a href="#contact">Контакти</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="intro">
+        <h2 class="fade-up">Привіт — я Рома, фронтенд-розробник.</h2>
+        <p class="fade-up" style="animation-delay:.1s">Роблю адаптивні інтерфейси, інтерактивні компоненти та невеликі веб‑проєкти. Люблю чистий код і приємний UX.</p>
+
+        <div class="cta fade-up" style="animation-delay:.18s">
+          <button class="btn" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">Портфоліо</button>
+          <a class="btn ghost" href="#contact">Зв'язатися</a>
+        </div>
+
+        <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap">
+          <div class="card muted" style="padding:12px;border-radius:10px">Готовий до віддаленої/офлайн роботи</div>
+          <div class="card muted" style="padding:12px;border-radius:10px">Мова: українська / англійська</div>
+        </div>
+      </div>
+
+      <aside class="card profile">
+        <div class="avatar">R</div>
+        <div>
+          <div style="font-weight:700">Рома Петренко</div>
+          <div class="meta">Фронтенд • UI • JS</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <a class="btn ghost" href="#contact">Написати</a>
+          <a class="btn" href="#projects">Переглянути</a>
+        </div>
+      </aside>
+    </section>
+
+    <section id="about" style="margin-top:20px">
+      <div class="card">
+        <h3>Про мене</h3>
+        <p class="muted">Я розробляю красиві та прості інтерфейси — від лендингів до інтерактивних SPA. Працюю з чистим HTML, сучасним CSS (Flexbox, Grid), та ванільним/модульним JavaScript. Люблю оптимізацію і доступність.</p>
+      </div>
+    </section>
+
+    <section id="projects" style="margin-top:28px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h3>Проєкти</h3>
+        <div class="muted">Натисніть на проєкт, щоб побачити деталі</div>
+      </div>
+
+      <div class="projects" style="margin-top:12px">
+        <article class="project-card card" data-proj='{"title":"Інтерактивна гра","desc":"Міні-гра на чистому JS з адаптивним інтерфейсом та збереженням рекордів у localStorage.","tech":"HTML, CSS, JavaScript","links":"#"}'>
+          <h3>Інтерактивна гра</h3>
+          <p class="muted">Мала аркадна гра з простою механікою.</p>
+          <div class="tags"><span class="tag">JS</span><span class="tag">Canvas</span></div>
+        </article>
+
+        <article class="project-card card" data-proj='{"title":"Портфоліо SPA","desc":"Односторінковий сайт-портфоліо з плавною навігацією та адаптивними секціями.","tech":"HTML, CSS, JS","links":"#"}'>
+          <h3>Портфоліо SPA</h3>
+          <p class="muted">Лаконічний дизайн та приємні анімації.</p>
+          <div class="tags"><span class="tag">Responsive</span><span class="tag">UX</span></div>
+        </article>
+
+        <article class="project-card card" data-proj='{"title":"Todo App","desc":"Простий менеджер задач з фільтрацією та збереженням у localStorage.","tech":"HTML, CSS, JavaScript","links":"#"}'>
+          <h3>Todo App</h3>
+          <p class="muted">Невеликий корисний інструмент для продуктивності.</p>
+          <div class="tags"><span class="tag">Vanilla JS</span><span class="tag">LocalStorage</span></div>
+        </article>
+
+      </div>
+    </section>
+
+    <section id="skills" style="margin-top:28px">
+      <h3>Навички</h3>
+      <div class="grid-2" style="margin-top:12px">
+        <div class="card">
+          <h4>Технічні</h4>
+          <div class="skills" style="margin-top:12px">
+            <div class="skill"><div style="display:flex;justify-content:space-between"><strong>HTML</strong><span class="muted">95%</span></div><div class="bar"><i data-width="95%"></i></div></div>
+            <div class="skill"><div style="display:flex;justify-content:space-between"><strong>CSS</strong><span class="muted">90%</span></div><div class="bar"><i data-width="90%"></i></div></div>
+            <div class="skill"><div style="display:flex;justify-content:space-between"><strong>JavaScript</strong><span class="muted">85%</span></div><div class="bar"><i data-width="85%"></i></div></div>
+            <div class="skill"><div style="display:flex;justify-content:space-between"><strong>Accessibility</strong><span class="muted">75%</span></div><div class="bar"><i data-width="75%"></i></div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h4>Інструменти</h4>
+          <ul style="margin:12px 0;color:var(--muted);padding-left:18px">
+            <li>Git та GitHub</li>
+            <li>Chrome DevTools</li>
+            <li>Figma (базово)</li>
+            <li>Відлагодження та оптимізація</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" style="margin-top:28px">
+      <h3>Контакти</h3>
+      <div class="grid-2" style="margin-top:12px">
+        <div class="card">
+          <p class="muted">Найпростіший спосіб — написати на email або залишити повідомлення нижче.</p>
+          <p><strong>Email:</strong> <a href="mailto:roma@example.com">roma@example.com</a></p>
+          <p><strong>Telegram:</strong> @roma_dev</p>
+        </div>
+
+        <form class="card" id="contactForm" onsubmit="handleContact(event)">
+          <label>Ім'я <input name="name" required></label>
+          <label style="margin-top:8px">Email <input name="email" type="email" required></label>
+          <label style="margin-top:8px">Повідомлення <textarea name="message" required></textarea></label>
+          <div style="display:flex;gap:8px;margin-top:12px">
+            <button class="btn" type="submit">Надіслати</button>
+            <button type="reset" class="btn ghost">Очистити</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <footer>
+      <div>© <span id="year"></span> Рома Петренко — зроблено з ❤️</div>
+    </footer>
+  </main>
+
+  <!-- modal for project details -->
+  <div class="modal" id="modal">
+    <div class="modal-inner card" id="modalInner">
+      <button id="closeModal" style="float:right;background:transparent;border:0;color:var(--muted);font-size:20px;cursor:pointer">✕</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script>
+    // small helpers
+    const $ = (s,root=document)=>root.querySelector(s);
+    const $$ = (s,root=document)=>Array.from(root.querySelectorAll(s));
+
+    // dynamic year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // project modal
+    const projects = $$('.project-card');
+    const modal = $('#modal');
+    const modalContent = $('#modalContent');
+    const closeModal = $('#closeModal');
+
+    projects.forEach(p=>{
+      p.addEventListener('click', ()=>{
+        const data = JSON.parse(p.getAttribute('data-proj'));
+        modalContent.innerHTML = `
+          <h2>${data.title}</h2>
+          <p class="muted">${data.tech}</p>
+          <p style="margin-top:12px">${data.desc}</p>
+          <div style="margin-top:12px"><a class="btn" href="${data.links}">Відкрити проєкт</a></div>
+        `;
+        modal.classList.add('show');
+        document.body.style.overflow='hidden';
+      });
+    });
+
+    closeModal.addEventListener('click', ()=>{ modal.classList.remove('show'); document.body.style.overflow='auto'; });
+    modal.addEventListener('click', (e)=>{ if(e.target===modal){ modal.classList.remove('show'); document.body.style.overflow='auto'; } });
+
+    // skill bars animate in
+    function animateSkills(){
+      const bars = $$('[data-width]');
+      bars.forEach(i=>{
+        const w = i.getAttribute('data-width');
+        setTimeout(()=> i.style.width = w, 120);
+      });
+    }
+    // on load and on intersection
+    animateSkills();
+
+    // contact handler (non-server) — demonstrates client-side behavior
+    function handleContact(e){
+      e.preventDefault();
+      const f = e.target;
+      const data = {name:f.name.value,email:f.email.value,message:f.message.value};
+      // demo: open user's mail client with prefilled content
+      const subject = encodeURIComponent('Повідомлення з портфоліо — ' + data.name);
+      const body = encodeURIComponent(`Ім'я: ${data.name}\nEmail: ${data.email}\n\n${data.message}`);
+      window.location.href = `mailto:roma@example.com?subject=${subject}&body=${body}`;
+      f.reset();
+    }
+
+    // theme toggle (simple: invert colors) — persists in localStorage
+    const themeBtn = $('#themeBtn');
+    const prefersDark = true; // this template starts dark
+    const THEME_KEY = 'pf_theme';
+    function applyTheme(t){
+      if(t==='light'){
+        document.documentElement.style.setProperty('--bg','#f7fafc');
+        document.documentElement.style.setProperty('--card','#ffffff');
+        document.documentElement.style.setProperty('--muted','#475569');
+        document.documentElement.style.setProperty('--accent','#06b6d4');
+        document.documentElement.style.color = '#0b1220';
+      } else {
+        // reset to defaults from :root
+        document.documentElement.style.removeProperty('--bg');
+        document.documentElement.style.removeProperty('--card');
+        document.documentElement.style.removeProperty('--muted');
+        document.documentElement.style.removeProperty('--accent');
+        document.documentElement.style.color = '';
+      }
+      localStorage.setItem(THEME_KEY, t);
+    }
+    themeBtn.addEventListener('click', ()=>{
+      const cur = localStorage.getItem(THEME_KEY) || 'dark';
+      applyTheme(cur==='dark' ? 'light' : 'dark');
+    });
+    // restore
+    if(localStorage.getItem(THEME_KEY)) applyTheme(localStorage.getItem(THEME_KEY));
+
+    // mobile menu
+    const menuBtn = $('#menuBtn');
+    const mobileNav = $('#mobileNav');
+    menuBtn.addEventListener('click', ()=> mobileNav.classList.toggle('show'));
+
+    // tiny a11y / keyboard shortcut: press P to open first project
+    document.addEventListener('keydown', (e)=>{
+      if(e.key.toLowerCase()==='p'){ projects[0] && projects[0].click(); }
+      if(e.key==='Escape'){ modal.classList.remove('show'); document.body.style.overflow='auto'; }
+    });
+
+    // smooth scroll for internal links
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', (ev)=>{
+        const href = a.getAttribute('href');
+        if(href.length>1){ ev.preventDefault(); document.querySelector(href).scrollIntoView({behavior:'smooth'}); mobileNav.classList.remove('show'); }
+      });
+    });
+
+  </script>
+</body>
+</html>
